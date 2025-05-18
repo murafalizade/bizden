@@ -1,0 +1,35 @@
+import axios from "axios";
+import {BASE_API_URL, JWT_TOKEN_KEY} from "@/shared/constants";
+
+const api = axios.create({
+    baseURL: BASE_API_URL+ "/api",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    withCredentials: true,
+});
+
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem(JWT_TOKEN_KEY)!;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response) => response.data,
+    (error) => {
+        const errorMessage: string =
+            error.response?.data?.message;
+
+        return Promise.reject(new Error(errorMessage));
+    }
+);
+
+export default api;

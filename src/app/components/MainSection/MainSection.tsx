@@ -1,6 +1,7 @@
-import {motion} from "framer-motion";
-import {TextAnimation} from "@/app/components/TextAnimation";
-import {Button} from "antd";
+import { motion } from "framer-motion";
+import { TextAnimation } from "@/app/components/TextAnimation";
+import { Button } from "antd";
+import Link from "next/link";
 
 export const MainSection = () => {
     const fullText = "Tələbə, veteran və şəhid ailəsinin üzvləri üçün pulsuz və ya endirimli xidmətlərdən yararlanın.";
@@ -48,15 +49,20 @@ export const MainSection = () => {
                     type="default"
                     size="large"
                     shape="round"
-                    style={{minWidth: 160}}>
-                    Qeydiyyatdan keç
+                    style={{ minWidth: 160 }}>
+                    <Link href={'/register'}>
+                        Qeydiyyatdan keç
+                    </Link>
                 </Button>
                 <Button
                     type="primary"
                     size="large"
                     shape="round"
-                    style={{minWidth: 160}}
-                >Daxil ol
+                    style={{ minWidth: 160 }}
+                >
+                    <Link href={'/login'}>
+                        Daxil ol
+                    </Link>
                 </Button>
             </motion.div>
         </section>

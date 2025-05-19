@@ -1,14 +1,11 @@
-'use client'
+'use client';
+import React from 'react';
+import { Form, Input, Button, Typography } from 'antd';
+import Link from 'next/link';
 
-import React from 'react'
-import { Form, Input, Button, Typography } from 'antd'
-import Link from 'next/link'
-
-
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const LoginPage = () => {
-
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50 ">
       <div className="p-8 rounded-lg bg-white shadow-md w-full max-w-md text-center">
@@ -19,11 +16,7 @@ const LoginPage = () => {
           Xoş gəldiniz! Zəhmət olmasa, hesabınıza daxil olun.
         </Text>
 
-        <Form
-          name="login"
-          layout="vertical"
-          size="large"
-        >
+        <Form name="login" layout="vertical" size="large">
           <Form.Item
             label="Email"
             name="email"
@@ -44,17 +37,11 @@ const LoginPage = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="w-full"
-            >
-
-                Daxil ol
+            <Button type="primary" htmlType="submit" className="w-full">
+              Daxil ol
             </Button>
           </Form.Item>
         </Form>
-
 
         <div className="mt-4 text-sm">
           <Link href="/forgot-password" className="text-blue-600 hover:underline">
@@ -72,7 +59,7 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

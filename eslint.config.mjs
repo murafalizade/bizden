@@ -10,7 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+  {
+    rules: {
+      "prettier/prettier": "error",
+      "no-console": "error",                // Error on console.log (or turn off)
+      "react/react-in-jsx-scope": "off",  // Not needed in Next.js with React 17+
+      "@typescript-eslint/explicit-function-return-type": "off",  // Optional: disable strict return typing
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }], // Unused variables
+    }
+  }
 ];
 
 export default eslintConfig;

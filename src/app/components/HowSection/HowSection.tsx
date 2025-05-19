@@ -1,10 +1,8 @@
-import { Row, Col, Typography } from 'antd'
 import {
   UserAddOutlined,
   SearchOutlined,
   SmileOutlined,
 } from '@ant-design/icons'
-const { Title, Paragraph } = Typography
 
 const steps = [
   {
@@ -26,30 +24,23 @@ const steps = [
 
 export const HowSection = () => {
   return (
-    <section
-      id="how"
-      style={{ padding: '80px 20px', backgroundColor: 'white', textAlign: 'center' }}
-    >
-      <Title level={2}>Necə işləyir?</Title>
-      <Row gutter={[24, 24]} justify="center">
-        {steps.map((step, idx) => (
-          <Col xs={24} sm={12} md={8} key={idx}>
-            <div
-              style={{
-                backgroundColor: '#fff',
-                borderRadius: '12px',
-                padding: '30px 20px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                minHeight: '240px',
-              }}
-            >
-              <div style={{ marginBottom: 20 }}>{step.icon}</div>
-              <Title level={3}>{step.title}</Title>
-              <Paragraph>{step.desc}</Paragraph>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </section>
+      <section
+          id="how"
+          className="bg-white text-center px-5 py-20"
+      >
+        <h2 className="text-3xl font-semibold mb-4">Necə işləyir?</h2>
+        <div className="flex flex-wrap justify-center gap-6">
+          {steps.map((step, idx) => (
+              <div
+                  key={idx}
+                  className="bg-white rounded-xl shadow-md p-8 w-full sm:w-[45%] md:w-[30%] min-h-[240px] flex flex-col items-center"
+              >
+                <div className="mb-5">{step.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                <p className="text-gray-600">{step.desc}</p>
+              </div>
+          ))}
+        </div>
+      </section>
   )
 }

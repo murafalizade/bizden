@@ -5,10 +5,12 @@ import Link from 'next/link'
 import {Layout, Menu} from "antd";
 import {Content, Header} from "antd/es/layout/layout";
 import type { MenuProps } from 'antd'
+import {ReactQueryProvider} from "@/shared/components/ReactQueryClient";
+import {SECTIONS} from "@/app/libs/constants";
 
 export const metadata: Metadata = {
-  title: 'Bizdən',
-  description: 'Platform for students and veterans',
+  title: 'BIZDƏN – Tələbələr, veteranlar və şəhid ailələri üçün endirimlər',
+  description: 'BIZDƏN tələbələr, veteranlar və şəhid ailələri üçün endirimlər və pulsuz fürsətlər təqdim edən platformadır.',
 }
 
 
@@ -17,14 +19,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const sections = [
-    { key: 'about', label: 'Haqqımızda' },
-    { key: 'vision', label: 'Vizyonumuz' },
-    { key: 'how', label: 'Necə işləyir?' },
-    { key: 'contact', label: 'Əlaqə' },
-  ]
 
-  const menuItems: MenuProps['items'] = sections.map((s) => ({
+  const menuItems: MenuProps['items'] = SECTIONS.map((s) => ({
     key: s.key,
     label: <Link href={`/#${s.key}`}>{s.label}</Link>,
   }))
@@ -32,20 +28,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <ReactQueryProvider>
         <Layout className="min-h-screen bg-gray-100">
-          <Header className="fixed top-0 w-full z-50 px-10">
+          <Header className="fixed top-0 w-full z-50 px-10 bg-[#001529]">
             <Menu
-              theme="dark"
-              mode="horizontal"
-              className="flex justify-center bg-transparent"
-              items={menuItems}
+                theme="dark"
+                mode="horizontal"
+                selectedKeys={[]}
+                className="!hidden md:!flex justify-center bg-transparent"
+                items={menuItems}
             />
           </Header>
-
           <Content className="pt-16">
             {children}
           </Content>
         </Layout>
+      </ReactQueryProvider>
       </body>
     </html>
   )

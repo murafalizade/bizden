@@ -4,8 +4,6 @@ import { VisionSection } from "@/app/components/VisionSection";
 import { HowSection } from "@/app/components/HowSection";
 import { ContactSection } from "@/app/components/ContactSection";
 
-
-
 export default function Home() {
 
   return (

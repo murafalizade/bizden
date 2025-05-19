@@ -9,17 +9,7 @@ export const MainSection = () => {
     return (
         <section
             id="hero"
-            style={{
-                height: "100vh",
-                background: "#001529",
-                color: "#fff",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "0 20px",
-            }}
+            className="h-screen bg-[#001529] text-white flex flex-col justify-center items-center text-center px-5"
         >
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -27,7 +17,7 @@ export const MainSection = () => {
                 transition={{ duration: 1 }}
                 style={{ maxWidth: "700px" }}
             >
-                <h4 style={{ color: "#fff", fontSize: "3rem" }}>
+                <h4 className={'text-[#fff] text-5xl mb-5'}>
                     {"BİZDƏN"}-ə Xoş Gəlmisiniz
                 </h4>
                 <TextAnimation fullText={fullText} />

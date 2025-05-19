@@ -4,4 +4,5 @@
  * @module TextAnimation
  * @see {@link ./TextAnimation.tsx}
  */
+'use client'
 export * from './TextAnimation';

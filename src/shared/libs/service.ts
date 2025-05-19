@@ -23,12 +23,12 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-    (response) => response.data,
+    (response) => response,
     (error) => {
         const errorMessage: string =
             error.response?.data?.message;
 
-        return Promise.reject(new Error(errorMessage));
+        return Promise.reject(errorMessage);
     }
 );
 

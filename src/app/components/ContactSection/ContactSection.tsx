@@ -1,51 +1,112 @@
-import { Typography, Form, Input, Button } from 'antd'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import {Form, Input, Button, message} from 'antd'
+import {IFeedbackPayload} from "@/app/libs/models";
+import {useMutation} from "@tanstack/react-query";
+import {sendFeedback} from "@/app/libs/services";
 
-const { Title, Paragraph } = Typography
+const schema = yup.object({
+    fullName: yup
+        .string()
+        .required('Zəhmət olmasa adınızı daxil edin')
+        .max(100, 'Ad 100 simvoldan çox ola bilməz'),
+    email: yup
+        .string()
+        .email('Düzgün email formatı deyil')
+        .required('Zəhmət olmasa email daxil edin'),
+    message: yup
+        .string()
+        .required('Zəhmət olmasa mesaj daxil edin')
+        .max(300, 'Mesaj 300 simvoldan çox ola bilməz'),
+})
+
 
 export function ContactSection() {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset
+    } = useForm<IFeedbackPayload>({
+        resolver: yupResolver(schema),
+        reValidateMode: 'onChange'
+    });
 
+    const [messageApi, context] = message.useMessage();
+
+    const {mutateAsync} = useMutation({
+        mutationFn: sendFeedback,
+        onSuccess: async () => {
+            messageApi.success("Mesajınız göndərildi!");
+            reset();
+        },
+        onError: async () => {
+            await messageApi.error("Xəta baş verdi!");
+        }
+    })
+
+    const onSubmit = async (data: IFeedbackPayload) => {
+        await mutateAsync(data);
+    }
 
     return (
         <section
             id="contact"
             style={{ padding: '80px 20px', backgroundColor: '#fafafa', textAlign: 'center' }}
         >
-            <Title level={2}>Əlaqə</Title>
-            <Paragraph>Suallarınız və ya təklifləriniz varsa, bizimlə əlaqə saxlayın.</Paragraph>
+            {context}
+            <h2 className="text-3xl font-semibold mb-4">Əlaqə</h2>
+            <p>Suallarınız və ya təklifləriniz varsa, bizimlə əlaqə saxlayın.</p>
 
             <Form
                 layout="vertical"
                 style={{ maxWidth: 600, margin: '0 auto', textAlign: 'left' }}
+                onFinish={handleSubmit(onSubmit)}
             >
                 <Form.Item
-                    name="name"
                     label="Adınız"
-                    rules={[{ required: true, message: 'Zəhmət olmasa adınızı daxil edin', max: 100 }]}
+                    validateStatus={errors.fullName ? 'error' : ''}
+                    help={errors.fullName?.message}
+                    required
                 >
-                    <Input placeholder="Adınız" />
+                    <Controller
+                        name="fullName"
+                        control={control}
+                        render={({ field }) => <Input placeholder="Adınız" {...field} />}
+                    />
                 </Form.Item>
 
                 <Form.Item
-                    name="email"
                     label="Email"
-                    rules={[
-                        { required: true, message: 'Zəhmət olmasa email daxil edin' },
-                        { type: 'email', message: 'Düzgün email formatı deyil' },
-                    ]}
+                    validateStatus={errors.email ? 'error' : ''}
+                    help={errors.email?.message}
+                    required
                 >
-                    <Input placeholder="Email" />
+                    <Controller
+                        name="email"
+                        control={control}
+                        render={({ field }) => <Input placeholder="Email" {...field} />}
+                    />
                 </Form.Item>
 
                 <Form.Item
-                    name="message"
                     label="Mesaj"
-                    rules={[{ required: true, message: 'Zəhmət olmasa mesaj daxil edin', max: 300 }]}
+                    validateStatus={errors.message ? 'error' : ''}
+                    help={errors.message?.message}
+                    required
                 >
-                    <Input.TextArea placeholder="Mesajınız" rows={4} />
+                    <Controller
+                        name="message"
+                        control={control}
+                        render={({ field }) => (
+                            <Input.TextArea placeholder="Mesajınız" rows={4} {...field} />
+                        )}
+                    />
                 </Form.Item>
 
                 <Form.Item style={{ textAlign: 'center' }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={isSubmitting}>
                         Göndər
                     </Button>
                 </Form.Item>

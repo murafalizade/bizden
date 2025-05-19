@@ -1,7 +1,3 @@
-'use client'
-import { Typography } from 'antd'
-const { Title, Paragraph } = Typography
-
 export function AboutSection() {
     return (
         <section
@@ -11,12 +7,12 @@ export function AboutSection() {
                 textAlign: 'center',
             }}
         >
-            <Title level={2}>Haqqımızda</Title>
-            <Paragraph style={{ maxWidth: 800, margin: '0 auto' }}>
+            <h2 className="text-3xl font-semibold mb-4">Haqqımızda</h2>
+            <p className="max-w-[800px] mx-auto">
                 Platformamız tələbələr və veteranlar üçün müxtəlif xidmətlərə çıxışı
                 asanlaşdırmaq və onların həyatını daha da rahatlaşdırmaq üçün
                 yaradılmışdır.
-            </Paragraph>
+            </p>
         </section>
     )
 }

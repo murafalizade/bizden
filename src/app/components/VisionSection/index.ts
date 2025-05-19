@@ -1,1 +1,1 @@
-export * from './VisionSection'
+export * from './VisionSection';

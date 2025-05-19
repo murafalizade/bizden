@@ -8,12 +8,12 @@
     ]
   },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.23.0",

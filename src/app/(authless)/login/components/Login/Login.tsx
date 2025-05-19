@@ -9,7 +9,7 @@ interface LoginProps {
 export const Login: React.FC<LoginProps> = (props) => {
   return (
     <>
-      {/* Login component */}
+       Login component
     </>
   );
 };

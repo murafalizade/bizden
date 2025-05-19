@@ -1,8 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bizdən Frontend
+
+This is the frontend for the **Bizdən** platform, built with [Next.js](https://nextjs.org) using modern React features, TypeScript, and a tailored styling approach.
+
+---
+
+## Tech Stack
+
+* **Next.js (App Router)** with TypeScript
+* **Tailwind CSS** for layout, typography, and basic styling
+* **Ant Design** components only for Table, Form elements, Button, Card
+* **React Query** for data fetching and caching
+* **Yup** for validation schemas
+* **React Hook Form** for form state management
+
+---
+
+## Styling Guidelines
+
+* Use **Tailwind CSS** classes exclusively on HTML elements (`div`, `section`, `h1`, `p`, etc).
+* Do **NOT** use inline styles on HTML elements.
+* Use **Ant Design** components (`Table`, `Form`, `Button`, `Card`) as needed; inside AntD components, inline styles are allowed.
+* Avoid mixing inline styles on plain HTML elements; keep consistent styling through Tailwind CSS classes.
+
+---
+
+## Folder Structure and Usage Conventions
+
+```
+app/
+  ├─ page.tsx                  # Main server component page
+  ├─ components/               # Client components only, separate folders per component
+  │    ├─ SomeComponent/
+  │    │    ├─ index.ts        # Client component with "use client"
+  │    │    └─ styles.css      # component-specific styles (if any)
+  │    └─ ...
+libs/
+  ├─ redux/                    # Redux slices and store setup
+  ├─ services.ts               # API calls, react-query hooks, axios instance
+  ├─ models.ts                 # TypeScript types and interfaces
+  └─ constants.ts              # App-wide constants
+```
+
+* **page.tsx** files should be server components by default.
+* Any React components that need to use hooks, state, or client-only logic must be put inside `components/` folder and use `"use client";` directive at the top.
+* Each folder inside `components/` should export a single component as default or named export in its own `index.tsx`.
+* Re-export components or utilities from each folder's `index.ts` to facilitate cleaner imports.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +58,27 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see your app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Start editing your pages under `app/` and components under `components/`. Tailwind CSS will automatically apply styles, and Ant Design components can be used as specified.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+* [Next.js Documentation](https://nextjs.org/docs)
+* [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+* [Ant Design Documentation](https://ant.design/components/overview/)
+* [React Query Documentation](https://tanstack.com/query/latest)
+* [React Hook Form Documentation](https://react-hook-form.com/get-started/)
+* [Yup Validation](https://github.com/jquense/yup)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Deploy your Bizdən frontend using the [Vercel Platform](https://vercel.com/new) with zero configuration. See the [Next.js deployment docs](https://nextjs.org/docs/app/building-your-application/deploying) for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---

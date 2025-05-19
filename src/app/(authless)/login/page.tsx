@@ -6,8 +6,6 @@ import Link from 'next/link';
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
-  console.log("sfsdf");
-  const a = 3;
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50 ">
       <div className="p-8 rounded-lg bg-white shadow-md w-full max-w-md text-center">

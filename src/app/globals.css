@@ -41,3 +41,15 @@ body {
     background-position: 0% 50%;
   }
 }
+
+.custom-steps .ant-steps-item-title {
+  font-size: 13px; /* adjust as needed */
+}
+
+.custom-steps .ant-steps-item-description {
+  font-size: 12px;
+}
+
+.custom-steps .ant-steps-item {
+  min-width: 0; /* optional: prevent large spacing */
+}

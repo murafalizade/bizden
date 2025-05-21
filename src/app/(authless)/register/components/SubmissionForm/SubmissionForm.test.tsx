@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import {LoginForm} from './index';
+import {SubmissionForm} from './index';
 
-describe('<LoginForm />', () => {
+describe('<SubmissionForm />', () => {
   it('renders without crashing', () => {
-    const { container } = render(<LoginForm />);
+    const { container } = render(<SubmissionForm />);
     expect(container).toBeTruthy();
   });
 });

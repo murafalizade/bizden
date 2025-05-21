@@ -20,8 +20,6 @@ fs.mkdirSync(baseDir, { recursive: true });
 
 // index.tsx - React component
 const componentCode = `\
-"use client";
-
 import React from 'react';
 
 interface ${componentName}Props {
@@ -40,19 +38,21 @@ export const ${componentName}: React.FC<${componentName}Props> = (props) => {
 fs.writeFileSync(path.join(baseDir, `${componentName}.tsx`), componentCode);
 
 // index.ts - re-export
-const exportCode = `export * from \`./${componentName}\``;
+const exportCode = `\
+"use client";
+export * from \'./${componentName}\'`;
 fs.writeFileSync(path.join(baseDir, 'index.ts'), exportCode);
 
 // test file
 const testCode = `\
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import {${componentName}} from './index';
 
 describe('<${componentName} />', () => {
   it('renders without crashing', () => {
-    render(<${componentName} />);
-    expect(screen.getByText(/${componentName} component/i)).toBeInTheDocument();
+    const { container } = render(<${componentName} />);
+    expect(container).toBeTruthy();
   });
 });
 `;

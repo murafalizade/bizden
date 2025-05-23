@@ -1,7 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import React from 'react';
-import { ReactQueryProvider } from '@/shared/components/ReactQueryClient';
+import {QueryProvider} from "@shared/providers/QueryProvider";
+import {ReduxProvider} from "@shared/providers/ReduxProvider";
 
 export const metadata: Metadata = {
   title: 'BIZDƏN – Tələbələr, veteranlar və şəhid ailələri üçün endirimlər',
@@ -13,9 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ReactQueryProvider>
+      <ReduxProvider>
+        <QueryProvider>
           {children}
-        </ReactQueryProvider>
+        </QueryProvider>
+      </ReduxProvider>
       </body>
     </html>
   );

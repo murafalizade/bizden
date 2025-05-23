@@ -5,10 +5,11 @@ import {IJwtPayload} from "@shared/libs/models";
 export const useJwtController = () => {
 
     const getJwtPayload = (): IJwtPayload | null => {
-        const token = localStorage.getItem(JWT_TOKEN_KEY);
-        if (!token) return null;
 
         try {
+            const token = localStorage.getItem(JWT_TOKEN_KEY);
+            if (!token) return null;
+
             const payload: IJwtPayload = jwtDecode(token);
 
             // Check if `exp` is a valid number and not expired
@@ -24,7 +25,7 @@ export const useJwtController = () => {
     };
 
     const setJwt = (token: string): void => {
-        localStorage.setItem(JWT_TOKEN_KEY, JSON.stringify(token));
+        localStorage.setItem(JWT_TOKEN_KEY, token);
     }
     return {getJwtPayload, setJwt}
 }

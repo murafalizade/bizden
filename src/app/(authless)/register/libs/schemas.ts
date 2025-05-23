@@ -1,4 +1,6 @@
 import * as yup from "yup";
+import {CATEGORY_LIST, UNIVERSITY_LIST} from "@app/(authless)/register/libs/constants";
+import {BusinessType} from "@shared/libs/models";
 
 export const submissionSchema = yup.object({
     note: yup.string().optional(),
@@ -6,48 +8,95 @@ export const submissionSchema = yup.object({
 })
 
 export const studentInfoSchema = yup.object({
-    universityName: yup.string().optional(),
-    major: yup.string().optional(),
-    startYear: yup.string().optional(),
-    endYear: yup.string().optional(),
-    studentIdFiles: yup.string().optional(),
-})
+    universityName: yup
+        .string()
+        .oneOf(UNIVERSITY_LIST, "Yalnız tanınmış universitet adı daxil edilməlidir")
+        .required("Universitet adı tələb olunur"),
+    major: yup
+        .string()
+        .required("İxtisas tələb olunur"),
+    startYear: yup
+        .number()
+        .required("Başlama ili tələb olunur"),
+    endYear: yup
+        .number()
+        .required("Bitirmə ili tələb olunur"),
+    studentIdFiles: yup
+        .array()
+        .of(yup.string().required("Fayl boş ola bilməz"))
+        .min(1, "Ən azı bir tələbə vəsiqəsi faylı əlavə edilməlidir")
+        .required("Tələbə vəsiqəsi faylları tələb olunur"),
+});
 
 export const veteranInfoSchema = yup.object({
-    type: yup.string().optional(),
-    description: yup.string().optional(),
-    relevanceType: yup.string().optional(),
-    veteranProofFiles: yup.string().optional(),
-})
+    type: yup
+        .number()
+        .required("Veteran növü tələb olunur"),
+    description: yup
+        .string()
+        .required("Açıqlama tələb olunur"),
+    relevanceType: yup
+        .string()
+        .required("Əlaqə növü tələb olunur"),
+    veteranProofFiles: yup
+        .array()
+        .of(yup.string().required("Fayl boş ola bilməz"))
+        .min(1, "Ən azı bir sübut faylı əlavə edilməlidir")
+        .required("Veteran sübut faylları tələb olunur"),
+});
 
-export const getStep2And3SchemaByRole = (role: string) => {
-    const baseStep3 = {
-        confirmation: yup.boolean().oneOf([true], "Təsdiq zəruridir"),
-    };
+export const businessInfoSchema = yup.object({
+    name: yup
+        .string()
+        .required("Biznes adı tələb olunur"),
 
-    switch (role) {
-        case "Student":
-            return yup.object({
-                university: yup.string().required("Universitet adı tələb olunur"),
-                major: yup.string().required("İxtisas tələb olunur"),
-                ...baseStep3,
-            });
+    type: yup
+        .number()
+        .oneOf([BusinessType.Corporate, BusinessType.Individual])
+        .required("Biznes növü tələb olunur"),
 
-        case "Veteran":
-            return yup.object({
-                relation: yup.string().required("Əlaqə tipi tələb olunur"),
-                document: yup.mixed().required("Sənəd əlavə edin"),
-                ...baseStep3,
-            });
+    category: yup
+        .string()
+        .oneOf(CATEGORY_LIST.flatMap(x=> x.options), "Yalnız tanınmış kateqoriya adı daxil edilməlidir")
+        .required("Kateqoriya tələb olunur"),
 
-        case "Business":
-            return yup.object({
-                companyName: yup.string().required("Şirkət adı tələb olunur"),
-                supportType: yup.string().required("Dəstək növü tələb olunur"),
-                ...baseStep3,
-            });
+    city: yup
+        .string()
+        .required("Şəhər tələb olunur"),
 
-        default:
-            return yup.object(baseStep3); // fallback
-    }
-};
+    description: yup
+        .string()
+        .required("Biznes açıqlaması tələb olunur"),
+
+    motivationLetter: yup
+        .string()
+        .when("type", {
+            is: BusinessType.Corporate,
+            then: (schema) => schema.optional(),
+            otherwise: (schema) => schema.required("Motivasiya məktubu tələb olunur"),
+        }),
+
+    location: yup
+        .string()
+        .when("type", {
+            is: BusinessType.Corporate,
+            then: (schema) => schema.required("Ünvan tələb olunur"),
+            otherwise: (schema) => schema.optional(),
+        }),
+
+    phoneNumber: yup
+        .string()
+        .when("type", {
+            is: BusinessType.Corporate,
+            then: (schema) => schema.required("Telefon nömrəsi tələb olunur"),
+            otherwise: (schema) => schema.optional(),
+        }),
+
+    profileImage: yup
+        .string()
+        .when("type", {
+            is: BusinessType.Corporate,
+            then: (schema) => schema.required("Profil şəkli tələb olunur"),
+            otherwise: (schema) => schema.optional(),
+        }),
+});

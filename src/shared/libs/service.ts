@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { BASE_API_URL, JWT_TOKEN_KEY } from '@/shared/constants';
+import { BASE_API_URL } from '@/shared/constants';
+import {CookieManager} from "@shared/libs/cookieManager";
 
 const api = axios.create({
   baseURL: BASE_API_URL + '/api',
@@ -10,8 +11,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem(JWT_TOKEN_KEY)!;
+    async config => {
+    const token = await CookieManager.getCookie();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

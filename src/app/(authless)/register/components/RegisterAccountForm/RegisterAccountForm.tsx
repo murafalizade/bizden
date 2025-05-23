@@ -1,13 +1,15 @@
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import React from "react";
 import {Button, Form, Input, Select} from 'antd';
-import {RegisterPayload} from "@app/(authless)/register/libs/models";
+import {RegisterPayload, RegisterStep} from "@app/(authless)/register/libs/models";
 import {UserRole} from "@shared/libs/models";
 import {useMutation} from "@tanstack/react-query";
 import {postRegister} from "@app/(authless)/register/libs/services";
-import {useJwtController} from "@shared/hooks/useJwtController";
+import {useAppDispatch} from "@shared/store/store";
+import {setStep} from "@app/(authless)/register/libs/slice";
+import {CookieManager} from "@shared/libs/cookieManager";
 
 
 const Option = Select.Option;
@@ -22,11 +24,10 @@ const registerAccountSchema = yup.object({
 });
 
 interface RegisterAccountFormProps {
-    nextStep: () => void;
 }
 
-export const RegisterAccountForm: React.FC<RegisterAccountFormProps> = ({nextStep}) => {
-  const {setJwt} = useJwtController();
+export const RegisterAccountForm: React.FC<RegisterAccountFormProps> = () => {
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -45,9 +46,9 @@ export const RegisterAccountForm: React.FC<RegisterAccountFormProps> = ({nextSte
 
   const {mutateAsync} = useMutation({
     mutationFn: postRegister,
-    onSuccess: data => {
-        setJwt(data);
-        nextStep();
+    onSuccess: async data => {
+        await CookieManager.setCookie(data);
+        dispatch(setStep(RegisterStep.ProfileInfo))
     }
   });
 

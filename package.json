@@ -7,6 +7,11 @@
       "prettier --write"
     ]
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "scripts": {
     "prepare": "husky",
     "dev": "next dev",
@@ -17,7 +22,8 @@
     "generate-component": "node scripts/generate-component.mjs",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.23.0",
@@ -29,6 +35,7 @@
     "@tanstack/react-query": "^5.76.1",
     "antd": "^5.25.1",
     "axios": "^1.9.0",
+    "commitizen": "^4.3.1",
     "framer-motion": "^12.12.1",
     "jwt-decode": "^4.0.0",
     "next": "15.3.2",
@@ -41,6 +48,8 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-onboarding": "^8.6.14",

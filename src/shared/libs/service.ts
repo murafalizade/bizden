@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BASE_API_URL } from '@/shared/constants';
-import {CookieManager} from "@shared/libs/cookieManager";
+import {ClientCookieManager} from "@shared/libs/cookie-manager/client-cookie-manager";
 
 const api = axios.create({
   baseURL: BASE_API_URL + '/api',
@@ -12,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     async config => {
-    const token = await CookieManager.getCookie();
+    const token = await ClientCookieManager.getCookie();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

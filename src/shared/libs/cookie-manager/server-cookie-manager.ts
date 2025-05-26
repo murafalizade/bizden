@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
-import { Hash } from './hash';
+import { Hash } from '../hash';
 import {JWT_TOKEN_KEY} from "@shared/constants";
 
-export class CookieManager {
+export class ServerCookieManager {
     static async getRawCookie(key: string): Promise<string | undefined> {
-        const hashedKey = Hash.hashKey(key);
+        const hashedKey = await Hash.hashKey(key);
         const encryptedValue = (await cookies()).get(hashedKey)?.value;
         if (!encryptedValue) return undefined;
         try {
@@ -15,8 +15,8 @@ export class CookieManager {
     }
 
     static async setCookie(value: string) {
-        const hashedKey = Hash.hashKey(JWT_TOKEN_KEY);
-        const encryptedValue = Hash.encrypt(value);
+        const hashedKey = await Hash.hashKey(JWT_TOKEN_KEY);
+        const encryptedValue = await Hash.encrypt(value);
        (await cookies()).set({
             name: hashedKey,
             value: encryptedValue,
@@ -28,7 +28,7 @@ export class CookieManager {
     }
 
     static async deleteCookie(key: string) {
-        const hashedKey = Hash.hashKey(key);
+        const hashedKey = await Hash.hashKey(key);
         (await cookies()).delete(hashedKey);
     }
 

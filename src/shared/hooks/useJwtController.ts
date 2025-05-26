@@ -12,7 +12,6 @@ export const useJwtController = () => {
 
             const payload: IJwtPayload = jwtDecode(token);
 
-            // Check if `exp` is a valid number and not expired
             if (typeof payload.exp !== 'number') return null;
 
             const currentTime = Math.floor(Date.now() / 1000);

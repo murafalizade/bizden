@@ -15,6 +15,7 @@ export const mapperFileUploader = (fileNames: string[]): UploadFile[] => {
 };
 
 export const routeAccessController = (path: string, role: string) => {
+    if(role === 'admin') return true
     const allowedRoles = roleGuard[path];
     if (!allowedRoles) return true;
     return allowedRoles.includes(role);

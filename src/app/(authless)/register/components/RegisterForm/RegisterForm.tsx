@@ -6,9 +6,9 @@ import {ProfileInfoForm} from "@app/(authless)/register/components/ProfileInfoFo
 import {SubmissionForm} from "@app/(authless)/register/components/SubmissionForm";
 import {useAppDispatch, useAppSelector} from "@shared/store/store";
 import {setStep} from "@app/(authless)/register/libs/slice";
-import {CookieManager} from "@shared/libs/cookieManager";
 import {jwtDecoder} from "@shared/libs/helpers";
 import {IJwtPayload} from "@shared/libs/models";
+import {ClientCookieManager} from "@shared/libs/cookie-manager/client-cookie-manager";
 
 const {Step} = Steps;
 
@@ -19,7 +19,7 @@ export const RegisterForm: React.FC = () => {
 
     useEffect(() => {
         const fetchJWT = async () => {
-            const jwt = await CookieManager.getCookie();
+            const jwt = await ClientCookieManager.getCookie();
             if (!jwt) return;
 
             const decoded = jwtDecoder(jwt);

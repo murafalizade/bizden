@@ -1,5 +1,8 @@
 export const roleGuard: Record<string, string[]> = {
-    '/admin/dashboard': ['admin'],
-    '/user/profile': ['user', 'admin'],
-    '/manager/tools': ['manager'],
+    '/dashboard': ['veteran', 'student', 'business'],
+    '/dashboard/search': ['veteran', 'student', 'business'],
+    '/dashboard/applications': ['veteran', 'student'],
+    '/dashboard/opportunities': ['business'],
+    '/dashboard/create': ['business'],
+    '/dashboard/profile': ['veteran', 'student', 'business'],
 };

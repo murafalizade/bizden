@@ -9,7 +9,7 @@ import {useMutation} from "@tanstack/react-query";
 import {postRegister} from "@app/(authless)/register/libs/services";
 import {useAppDispatch} from "@shared/store/store";
 import {setStep} from "@app/(authless)/register/libs/slice";
-import {CookieManager} from "@shared/libs/cookieManager";
+import Cookies from 'js-cookie';
 
 
 const Option = Select.Option;
@@ -47,7 +47,7 @@ export const RegisterAccountForm: React.FC<RegisterAccountFormProps> = () => {
   const {mutateAsync} = useMutation({
     mutationFn: postRegister,
     onSuccess: async data => {
-        await CookieManager.setCookie(data);
+        Cookies.set('myCookie', 'HelloFromClient', { expires: 7 });
         dispatch(setStep(RegisterStep.ProfileInfo))
     }
   });

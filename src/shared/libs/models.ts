@@ -40,13 +40,13 @@ export interface BusinessProfile {
   id: string;
   name: string;
   description: string;
-  location?: string;
+  location: string | undefined;
   city: string;
   type: number;
   category: string;
-  motivationLetter?: string;
-  phoneNumber?: string;
-  profileImage?: string;
+  motivationLetter: string | undefined;
+  phoneNumber: string | undefined;
+  profileImage: string | undefined;
 
   userId: string;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { AppDashboardLayout } from '@app/dashboard/components/AppDashboardLayout';
+import { AuthenticationProvider } from '@shared/providers/AuthenticationProvider';
 
 export const metadata: Metadata = {
   title: 'BIZDƏN – Tələbələr, veteranlar və şəhid ailələri üçün endirimlər',
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <AppDashboardLayout>{children}</AppDashboardLayout>;
+  return (
+    <AuthenticationProvider>
+      <AppDashboardLayout>{children}</AppDashboardLayout>
+    </AuthenticationProvider>
+  );
 }

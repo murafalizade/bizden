@@ -1,5 +1,5 @@
 import { useAuth } from '@/shared/hooks/useAuth';
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Badge, Button, Divider, Dropdown, Menu, Space } from 'antd';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import {
@@ -22,7 +22,6 @@ interface HeaderProps {
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
-  const [showBanner, setShowBanner] = useState(!user?.isVerified);
   const router = useRouter();
 
   const handleMenuClick = async ({ key }: { key: string }) => {
@@ -99,7 +98,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      {showBanner && (
+      {!user?.isVerified && (
         <div
           style={{
             background: '#fff1f0',
@@ -124,7 +123,6 @@ export const Header: React.FC = () => {
               cursor: 'pointer',
               color: '#8c8c8c',
             }}
-            onClick={() => setShowBanner(false)}
           />
         </div>
       )}
@@ -137,7 +135,7 @@ export const Header: React.FC = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          top: showBanner ? 90 : 0,
+          top: !user?.isVerified ? 90 : 0,
           zIndex: 10,
         }}
       >

@@ -25,7 +25,7 @@ export const AuthenticationProvider = ({ children }: { children: React.ReactNode
 
     const currentTime = Math.floor(Date.now() / 1000);
     const timeLeft = decodedJwt.exp - currentTime;
-    console.log(timeLeft, timeLeft);
+    console.log(timeLeft);
     if (timeLeft <= 60 * 5) {
       refresh();
       return;

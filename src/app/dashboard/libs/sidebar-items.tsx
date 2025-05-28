@@ -9,7 +9,7 @@ import { MenuItemType } from 'antd/es/menu/interface';
 import { UserRole } from '@shared/libs/models';
 import Link from 'next/link';
 
-export const menuItems: Array<MenuItemType & { accessRoles: UserRole[]; path: string }> = [
+export const sidebarItems: Array<MenuItemType & { accessRoles: UserRole[]; path: string }> = [
   {
     key: 'dashboard',
     icon: <HomeOutlined style={{ fontSize: '24px' }} />,

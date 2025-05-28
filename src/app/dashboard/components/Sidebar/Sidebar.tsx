@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Menu } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
-import { menuItems } from '@app/dashboard/libs/menu-items';
 import { useAuth } from '@shared/hooks/useAuth';
 import { UserRole } from '@shared/libs/models';
+import { usePathname } from 'next/navigation';
+import { sidebarItems } from '@app/dashboard/libs/sidebar-items';
 
 interface SidebarProps {
   // Define your props here
@@ -11,11 +12,28 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = () => {
   const { user, logout } = useAuth();
-  const accessibleMenuItems = menuItems!.filter(menuItem => {
-    if (menuItem.accessRoles.length === 0 || user?.role === UserRole.Admin) return true;
-    if (!user) return false;
-    return menuItem.accessRoles.includes(user.role);
-  });
+
+  const menuItems = useMemo(() => {
+    return sidebarItems
+      .filter(menuItem => {
+        if (menuItem.accessRoles.length === 0 || user?.role === UserRole.Admin) return true;
+        if (!user) return false;
+        return menuItem.accessRoles.includes(user.role);
+      })
+      .map(({ accessRoles, ...rest }) => rest);
+  }, [user]);
+
+  const pathname = usePathname();
+
+  const selectedKey = useMemo(() => {
+    if (pathname.startsWith('/dashboard/create-opportunity')) return 'create';
+    if (pathname.startsWith('/dashboard/search')) return 'search';
+    if (pathname.startsWith('/dashboard/opportunities')) return 'my-offers';
+    if (pathname.startsWith('/dashboard/applications')) return 'my-discounts';
+    if (pathname.startsWith('/dashboard/profile')) return 'profile';
+    if (pathname.startsWith('/dashboard')) return 'dashboard';
+    return '';
+  }, [pathname]);
 
   return (
     <div
@@ -45,8 +63,8 @@ export const Sidebar: React.FC<SidebarProps> = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['home']}
-          // selectedKeys={[selectedItem]}
-          items={accessibleMenuItems}
+          selectedKeys={[selectedKey]}
+          items={menuItems}
           style={{
             fontSize: '16px',
             padding: '16px',

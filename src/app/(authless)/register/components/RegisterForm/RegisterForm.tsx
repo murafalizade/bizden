@@ -22,7 +22,6 @@ export const RegisterForm: React.FC = () => {
   useEffect(() => {
     const jwt = ClientCookieManager.getCookie();
     const decoded = jwtDecoder(jwt);
-    console.log(decoded);
     if (decoded && !decoded?.isCompleted) {
       setJwtPayload(decoded);
       dispatch(setStep(RegisterStep.ProfileInfo));

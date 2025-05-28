@@ -8,26 +8,36 @@ import {
   postVerificationBusinessProfile,
   postVerificationProfile,
   postVerificationVeteranProfile,
+  refreshToken,
 } from '@app/(authless)/register/libs/services';
 import { UserRole } from '@shared/libs/models';
 import { useAppDispatch, useAppSelector } from '@shared/store/store';
 import { RegisterStep, SubmissionPayload } from '@app/(authless)/register/libs/models';
 import { setStep } from '@app/(authless)/register/libs/slice';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ClientCookieManager } from '@shared/libs/cookie-manager/client-cookie-manager';
 
 interface SubmissionFormProps {
-  role: UserRole;
   userId: string;
 }
 
-export const SubmissionForm: React.FC<SubmissionFormProps> = ({ role, userId }) => {
+export const SubmissionForm: React.FC<SubmissionFormProps> = ({ userId }) => {
   const profileInfo = useAppSelector(state => state.register);
   const dispatch = useAppDispatch();
+
+  const router = useRouter();
 
   const backStep = () => {
     dispatch(setStep(RegisterStep.ProfileInfo));
   };
+
+  const { mutateAsync: tokenRenew } = useMutation({
+    mutationFn: refreshToken,
+    onSuccess: token => {
+      ClientCookieManager.setCookie(token);
+      router.push('/dashboard');
+    },
+  });
 
   const {
     control,
@@ -41,45 +51,45 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({ role, userId }) 
   const { mutateAsync: verifyStudentProfile } = useMutation({
     mutationFn: postVerificationProfile,
     onSuccess: async () => {
-      await ClientCookieManager.refreshToken();
-      redirect('/dashboard');
+      await tokenRenew();
     },
   });
 
   const { mutateAsync: verifyVeteranProfile } = useMutation({
     mutationFn: postVerificationVeteranProfile,
     onSuccess: async () => {
-      await ClientCookieManager.refreshToken();
-      redirect('/dashboard');
+      await tokenRenew();
     },
   });
 
   const { mutateAsync: verifyBusinessProfile } = useMutation({
     mutationFn: postVerificationBusinessProfile,
     onSuccess: async () => {
-      await ClientCookieManager.refreshToken();
-      redirect('/dashboard');
+      await tokenRenew();
     },
   });
 
   const onSubmit = async (variables: SubmissionPayload) => {
-    if (role === UserRole.Business && profileInfo.businessInfoPayload) {
+    if (profileInfo.selectedRole === UserRole.Business && profileInfo.businessInfoPayload) {
       await verifyBusinessProfile({
         userId,
         note: variables?.note,
         businessInfo: profileInfo.businessInfoPayload,
+        role: UserRole.Business,
       });
-    } else if (role === UserRole.Veteran) {
+    } else if (profileInfo.selectedRole === UserRole.Veteran) {
       await verifyVeteranProfile({
         userId,
         note: variables?.note,
         veteranInfo: profileInfo?.veteranInfoPayload,
+        role: UserRole.Veteran,
       });
     } else {
       await verifyStudentProfile({
         userId,
         note: variables?.note,
         studentInfo: profileInfo?.studentInfoPayload,
+        role: UserRole.Student,
       });
     }
   };
@@ -107,7 +117,11 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({ role, userId }) 
             control={control}
             name="confirmation"
             render={({ field }) => (
-              <Checkbox style={{ textAlign: 'left' }} {...field}>
+              <Checkbox
+                checked={field.value}
+                onChange={e => field.onChange(e.target.checked)}
+                style={{ textAlign: 'left' }}
+              >
                 Mən daxil etdiyim məlumatların doğru olduğunu təsdiqləyirəm. Yanlış məlumat təqdim
                 etmək və ya saxtakarlıq törətmək Azərbaycan Respublikasının qanunvericiliyinə əsasən
                 cinayət məsuliyyətinə səbəb ola bilər.

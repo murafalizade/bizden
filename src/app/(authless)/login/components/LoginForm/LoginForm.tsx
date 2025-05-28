@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Divider, Form, Input, message } from 'antd';
 import Link from 'next/link';
 import { LoginPayload } from '@app/(authless)/login/utils/models';
 import { useMutation } from '@tanstack/react-query';
 import { loginPost } from '@app/(authless)/login/utils/services';
 import { ClientCookieManager } from '@shared/libs/cookie-manager/client-cookie-manager';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { jwtDecoder } from '@shared/libs/helpers';
 
 const schema = yup
   .object({
@@ -28,17 +29,30 @@ export const LoginForm: React.FC = () => {
   });
 
   const [messageApi, context] = message.useMessage();
+  const router = useRouter();
 
   const { mutateAsync } = useMutation({
     mutationFn: loginPost,
     onSuccess: data => {
       ClientCookieManager.setCookie(data);
-      redirect('dashboard');
+      router.push('/dashboard');
     },
     onError: async (error: any) => {
       await messageApi.error(error?.message || 'Xəta baş verdi!');
     },
   });
+
+  useEffect(() => {
+    const jwt = ClientCookieManager.getCookie();
+    if (jwt) {
+      const decoded = jwtDecoder(jwt);
+      if (decoded && !decoded?.isCompleted) {
+        router.push('/dashboard');
+      } else if (decoded?.isCompleted) {
+        router.push('/dashboard');
+      }
+    }
+  }, []);
 
   const onSubmit = async (data: LoginPayload) => {
     await mutateAsync(data);
@@ -75,6 +89,18 @@ export const LoginForm: React.FC = () => {
       <Form.Item>
         <Button type="primary" htmlType="submit" className="w-full" loading={isSubmitting}>
           Daxil ol
+        </Button>
+      </Form.Item>
+
+      <Divider className={'font-light!'}>və ya</Divider>
+
+      <Form.Item>
+        <Button
+          type="default"
+          className="w-full"
+          icon={<img src="/assets/google.svg" alt="Google" style={{ width: 18, marginRight: 8 }} />}
+        >
+          Google ilə daxil ol
         </Button>
       </Form.Item>
 

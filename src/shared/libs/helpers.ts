@@ -21,7 +21,8 @@ export const routeAccessController = (path: string, role: UserRole) => {
   return allowedRoles.includes(role);
 };
 
-export const jwtDecoder = (jwt: string) => {
+export const jwtDecoder = (jwt?: string) => {
+  if (!jwt) return null;
   const payload: IJwtPayload = jwtDecode(jwt);
 
   // Check if `exp` is a valid number and not expired

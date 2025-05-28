@@ -10,14 +10,7 @@
   --color-foreground: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 body {
-  /*font-weight: 400;*/
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -52,4 +45,8 @@ body {
 
 .custom-steps .ant-steps-item {
   min-width: 0; /* optional: prevent large spacing */
+}
+
+.ant-form-item-control-input-content{
+  text-align: left;
 }

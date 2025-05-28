@@ -2,7 +2,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import React from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { RegisterPayload, RegisterStep } from '@app/(authless)/register/libs/models';
 import { UserRole } from '@shared/libs/models';
 import { useMutation } from '@tanstack/react-query';
@@ -10,8 +10,6 @@ import { postRegister } from '@app/(authless)/register/libs/services';
 import { useAppDispatch } from '@shared/store/store';
 import { setStep } from '@app/(authless)/register/libs/slice';
 import { ClientCookieManager } from '@shared/libs/cookie-manager/client-cookie-manager';
-
-const Option = Select.Option;
 
 const registerAccountSchema = yup.object({
   fullName: yup.string().required('Adınızı daxil edin!'),
@@ -90,24 +88,6 @@ export const RegisterAccountForm: React.FC<RegisterAccountFormProps> = () => {
           control={control}
           name="password"
           render={({ field }) => <Input.Password {...field} placeholder="Şifrə daxil edin" />}
-        />
-      </Form.Item>
-
-      <Form.Item
-        label="Mən"
-        validateStatus={errors.role ? 'error' : ''}
-        help={errors.role?.message}
-      >
-        <Controller
-          control={control}
-          name="role"
-          render={({ field }) => (
-            <Select {...field} placeholder="Rol seçin" allowClear>
-              <Option value="Student">Tələbəyəm</Option>
-              <Option value="Veteran">Veteran və ya Şəhid Ailəsi üzvüyəm</Option>
-              <Option value="Business">Dəstək olmaq istəyirəm</Option>
-            </Select>
-          )}
         />
       </Form.Item>
 

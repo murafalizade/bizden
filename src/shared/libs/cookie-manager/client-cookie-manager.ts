@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { JWT_TOKEN_KEY } from '@shared/constants';
+import { BASE_API_URL, JWT_TOKEN_KEY } from '@shared/constants';
 import axios, { AxiosResponse } from 'axios';
 
 export class ClientCookieManager {
@@ -12,26 +12,15 @@ export class ClientCookieManager {
       secure: true,
       sameSite: 'lax',
       path: '/',
-      // httpOnly can't be set on the client
+      expires: new Date(Date.now() + 15 * 60 * 1000),
     });
   }
 
-  static deleteCookie(key: string) {
-    Cookies.remove(key);
+  static deleteCookie() {
+    Cookies.remove(JWT_TOKEN_KEY);
   }
 
-  static async getCookie(): Promise<string | undefined> {
-    const token = this.getRawCookie(JWT_TOKEN_KEY);
-    const refreshToken = this.getRawCookie('refresh_token');
-    if (!token && refreshToken) {
-      return await this.refreshToken();
-    }
-    return token;
-  }
-
-  static async refreshToken() {
-    const token: AxiosResponse<string> = await axios.post('/api/auth/refresh-token');
-    this.setCookie(token.data);
-    return token.data;
+  static getCookie(): string | undefined {
+    return this.getRawCookie(JWT_TOKEN_KEY);
   }
 }

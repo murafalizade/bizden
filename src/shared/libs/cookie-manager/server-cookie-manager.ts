@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
-import { JWT_TOKEN_KEY } from '@shared/constants';
-import { AxiosResponse } from 'axios';
+import { BASE_API_URL, JWT_TOKEN_KEY } from '@shared/constants';
+import axios, { AxiosResponse } from 'axios';
 import service from '@shared/libs/service';
 
 export class ServerCookieManager {
@@ -12,10 +12,10 @@ export class ServerCookieManager {
     (await cookies()).set({
       name: JWT_TOKEN_KEY,
       value,
-      httpOnly: true,
       secure: true,
       sameSite: 'lax',
       path: '/',
+      expires: new Date(Date.now() + 15 * 60 * 1000),
     });
   }
 
@@ -24,17 +24,6 @@ export class ServerCookieManager {
   }
 
   static async getCookie(): Promise<string | undefined> {
-    const token = await this.getRawCookie(JWT_TOKEN_KEY);
-    const refreshToken = await this.getRawCookie('refresh_token');
-    if (!token && refreshToken) {
-      return await this.refreshToken();
-    }
-    return token;
-  }
-
-  static async refreshToken() {
-    const token: AxiosResponse<string> = await service.post('/api/auth/refresh-token');
-    await this.setCookie(token.data);
-    return token.data;
+    return await this.getRawCookie(JWT_TOKEN_KEY);
   }
 }

@@ -23,3 +23,8 @@ export const postVerificationBusinessProfile = async (
 ) => {
   await api.post(`/verification/add-verification/business`, request);
 };
+
+export const refreshToken = async (): Promise<string> => {
+  const { data } = await api.post(`/auth/refresh`, {});
+  return data;
+};

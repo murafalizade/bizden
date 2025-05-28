@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Grid, Menu } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { menuItems } from '@app/dashboard/libs/menu-items';
 import { useAuth } from '@shared/hooks/useAuth';
@@ -9,8 +9,11 @@ interface SidebarProps {
   // Define your props here
 }
 
+const { useBreakpoint } = Grid;
+
 export const Sidebar: React.FC<SidebarProps> = () => {
   const { user, logout } = useAuth();
+  const screens = useBreakpoint();
   const accessibleMenuItems = menuItems!.filter(menuItem => {
     if (menuItem.accessRoles.length === 0 || user?.role === UserRole.Admin) return true;
     if (!user) return false;
@@ -18,29 +21,12 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   });
 
   return (
-    <div
-      style={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <div
-        style={{
-          height: '90px',
-          display: 'flex',
-          alignItems: 'center',
-          paddingLeft: '40px',
-          color: '#e6f7ff',
-          fontSize: '28px',
-          fontWeight: 700,
-          borderBottom: '1px solid rgba(255,255,255,0.15)',
-        }}
-      >
+    <div className="h-full flex flex-col">
+      <div className="h-20 flex items-center px-6 text-white text-2xl font-bold border-b">
         BIZDƏN!
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div className="flex-1 overflow-auto py-4">
         <Menu
           theme="dark"
           mode="inline"

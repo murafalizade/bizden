@@ -1,6 +1,6 @@
 import { useAuth } from '@/shared/hooks/useAuth';
 import React, { useState } from 'react';
-import { Avatar, Badge, Button, Divider, Dropdown, Menu, Space } from 'antd';
+import { Avatar, Badge, Button, Divider, Dropdown, Grid, Menu, Space } from 'antd';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import {
   BellOutlined,
@@ -16,6 +16,9 @@ import { useRouter } from 'next/navigation';
 import { getNotifications } from '@app/dashboard/notifications/libs/services';
 import { UserNotification } from '@app/dashboard/notifications/libs/models';
 
+
+const { useBreakpoint } = Grid;
+
 interface HeaderProps {
   // Define your props here
 }
@@ -24,6 +27,15 @@ export const Header: React.FC = () => {
   const { user, logout } = useAuth();
   const [showBanner, setShowBanner] = useState(!user?.isVerified);
   const router = useRouter();
+
+  const { data: notifications = [] } = useQuery<UserNotification[]>({
+    queryKey: ['NOTIFICATIONS'],
+    queryFn: () => getNotifications(),
+  });
+
+  const unreadCount = notifications.filter(n => !n.isRead).length;
+
+  const screens = useBreakpoint();
 
   const handleMenuClick = async ({ key }: { key: string }) => {
     if (key === 'profile') {
@@ -44,12 +56,7 @@ export const Header: React.FC = () => {
     </Menu>
   );
 
-  const { data: notifications = [] } = useQuery<UserNotification[]>({
-    queryKey: ['NOTIFICATIONS'],
-    queryFn: () => getNotifications(),
-  });
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
 
   const notificationMenu = (
     <Menu
@@ -100,55 +107,33 @@ export const Header: React.FC = () => {
   return (
     <>
       {showBanner && (
-        <div
-          style={{
-            background: '#fff1f0',
-            color: '#cf1322',
-            height: 60,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            top: 0,
-            zIndex: 999,
-            borderBottom: '1px solid #ffa39e',
-            padding: '0 48px',
-            fontWeight: 500,
-            fontSize: 16,
-          }}
-        >
+        <div className="bg-red-50 text-lg text-red-700 flex items-center justify-center px-6 z-999 top-0 " style={{ height: 60 }}>
           <span>Hesabınız hələ administrator tərəfindən təsdiqlənməyib.</span>
-          <CloseOutlined
-            style={{
-              marginLeft: 24,
-              fontSize: 18,
-              cursor: 'pointer',
-              color: '#8c8c8c',
-            }}
-            onClick={() => setShowBanner(false)}
-          />
+          <CloseOutlined className="ml-4 text-xl cursor-pointer" onClick={() => setShowBanner(false)} />
         </div>
       )}
 
       <AntHeader
         style={{
           background: '#fff',
-          padding: '0 24px',
-          borderBottom: '1px solid #f0f0f0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          top: showBanner ? 90 : 0,
-          zIndex: 10,
+          padding: screens.md ? "0 24px" : "0 12px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: "1px solid #f0f0f0",
+          position: "sticky",
+          top: showBanner ? 48 : 0,
+          zIndex: 100,
         }}
       >
-        <Title level={3} style={{ marginBottom: '1.5rem' }}>
+        <Title level={screens.md ? 3 : 4} style={{ margin: 0 }}>
           Xoş gəlmisiniz!
         </Title>
         <Space size="large" align="center" style={{ marginRight: 24 }}>
           <div style={{ marginTop: '15px' }}>
             <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight">
               <Badge count={unreadCount}>
-                <BellOutlined style={{ fontSize: 24, cursor: 'pointer' }} />
+                <BellOutlined style={{ fontSize: screens.md ? 24 : 20, cursor: "pointer" }} />
               </Badge>
             </Dropdown>
           </div>
@@ -156,14 +141,7 @@ export const Header: React.FC = () => {
           <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
             <div style={{ cursor: 'pointer' }}>
               <Space size="small" align="center">
-                <Avatar
-                  style={{
-                    backgroundColor: '#2f54eb',
-                    color: '#fff',
-                    fontWeight: 500,
-                  }}
-                  size="large"
-                >
+                <Avatar size={screens.md ? "large" : "middle"} style={{ backgroundColor: "#2f54eb" }}>
                   {user?.fullName?.charAt(0) || 'U'}
                 </Avatar>
                 <div
@@ -174,7 +152,7 @@ export const Header: React.FC = () => {
                     alignItems: 'flex-start',
                   }}
                 >
-                  <Text strong>{user?.fullName || 'User'}</Text>
+                  {screens.md && <Text strong>{user?.fullName}</Text>}
                   <Text type="secondary" style={{ fontSize: '12px', lineHeight: '1' }}>
                     {/*{USER_ROLE_NAME_MAPPING[user?.role as string]}*/}
                   </Text>

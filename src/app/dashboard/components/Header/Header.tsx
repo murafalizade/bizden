@@ -10,6 +10,8 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
+import Title from 'antd/es/typography/Title';
+import Text from 'antd/es/typography/Text';
 import { useRouter } from 'next/navigation';
 import { getNotifications } from '@app/dashboard/notifications/libs/services';
 import { UserNotification } from '@app/dashboard/notifications/libs/models';
@@ -17,9 +19,17 @@ import { userRoleMapper } from '@shared/libs/user-role-mapper';
 import { UserRole } from '@shared/libs/models';
 import Link from 'next/link';
 
+
+const { useBreakpoint } = Grid;
+
+interface HeaderProps {
+  // Define your props here
+}
+
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const screens = useBreakpoint();
 
   const profileMenuItems = [
     {
@@ -73,25 +83,36 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      {!user?.isVerified && (
-        <div className="bg-red-50 text-red-700 h-[60px] flex items-center justify-center top-0 z-[999] border-b border-red-300 px-12 font-medium text-base">
+        {!user?.isVerified && (
+        <div className="bg-red-50 text-lg text-red-700 flex items-center justify-center px-6 z-999 top-0 " style={{ height: 60 }}>
           <span>Hesabınız hələ administrator tərəfindən təsdiqlənməyib.</span>
-          <CloseOutlined className="ml-6 text-lg cursor-pointer text-gray-500" />
+          <CloseOutlined className="ml-4 text-xl cursor-pointer" />
         </div>
       )}
 
-      <AntHeader className="bg-white! px-6 border-b border-gray-200 flex justify-between items-center z-10">
-        <h1 className="text-2xl font-semibold">Xoş gəlmisiniz!</h1>
-
-        <Space size="large" align="center" className="mr-6">
-          <div>
+      <AntHeader
+        style={{
+          background: '#fff',
+          padding: screens.md ? "0 24px" : "0 12px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: "1px solid #f0f0f0",
+          position: "sticky",
+          top: showBanner ? 48 : 0,
+          zIndex: 100,
+        }}
+      >
+        <Title level={screens.md ? 3 : 4} style={{ margin: 0 }}>
+          Xoş gəlmisiniz!
+        </Title>
+        <Space size="large" align="center" style={{ marginRight: 24 }}>
+          <div style={{ marginTop: '15px' }}>
             <Dropdown
-              menu={{ items: notificationMenuItems }}
-              trigger={['click']}
-              placement="bottomRight"
-            >
+                menu={{ items: profileMenuItems }}
+                trigger={['click']} placement="bottomRight">
               <Badge count={unreadCount}>
-                <BellOutlined className="text-xl cursor-pointer" />
+                <BellOutlined style={{ fontSize: screens.md ? 24 : 20, cursor: "pointer" }} />
               </Badge>
             </Dropdown>
           </div>

@@ -120,12 +120,7 @@ export const Header: React.FC = () => {
             </Dropdown>
           </div>
 
-          <Dropdown
-            menu={{ items: profileMenuItems }}
-            overlayStyle={{ width: 350 }}
-            placement="bottomRight"
-            trigger={['click']}
-          >
+          <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" trigger={['click']}>
             <div className="cursor-pointer">
               <Space size="small" align="center">
                 <Avatar className="bg-blue-700! text-white font-medium" size="large">

@@ -40,8 +40,8 @@ export const Sidebar: React.FC<SidebarProps> = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="h-20 flex items-center px-6 text-white text-2xl font-bold border-b">
-        BIZDƏN!
+      <div className="h-20 flex items-center justify-center text-white text-2xl font-bold border-b">
+        BIZDƏN
       </div>
 
       <div className="flex-1 overflow-auto py-4">

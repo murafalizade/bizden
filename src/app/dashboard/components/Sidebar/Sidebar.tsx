@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Menu } from 'antd';
+import { Grid, Menu } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useAuth } from '@shared/hooks/useAuth';
 import { UserRole } from '@shared/libs/models';
@@ -14,7 +14,7 @@ const { useBreakpoint } = Grid;
 
 export const Sidebar: React.FC<SidebarProps> = () => {
   const { user, logout } = useAuth();
-    const screens = useBreakpoint();
+  const screens = useBreakpoint();
 
   const menuItems = useMemo(() => {
     return sidebarItems
@@ -44,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         BIZDƏN!
       </div>
 
-        <div className="flex-1 overflow-auto py-4">
+      <div className="flex-1 overflow-auto py-4">
         <Menu
           theme="dark"
           mode="inline"

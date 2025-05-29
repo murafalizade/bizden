@@ -1,6 +1,6 @@
 import { useAuth } from '@/shared/hooks/useAuth';
 import React from 'react';
-import { Avatar, Badge, Button, Dropdown, Space } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Grid, Space } from 'antd';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import {
   BellOutlined,
@@ -11,14 +11,12 @@ import {
 } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
 import Title from 'antd/es/typography/Title';
-import Text from 'antd/es/typography/Text';
 import { useRouter } from 'next/navigation';
 import { getNotifications } from '@app/dashboard/notifications/libs/services';
 import { UserNotification } from '@app/dashboard/notifications/libs/models';
 import { userRoleMapper } from '@shared/libs/user-role-mapper';
 import { UserRole } from '@shared/libs/models';
 import Link from 'next/link';
-
 
 const { useBreakpoint } = Grid;
 
@@ -83,8 +81,11 @@ export const Header: React.FC = () => {
 
   return (
     <>
-        {!user?.isVerified && (
-        <div className="bg-red-50 text-lg text-red-700 flex items-center justify-center px-6 z-999 top-0 " style={{ height: 60 }}>
+      {!user?.isVerified && (
+        <div
+          className="bg-red-50 text-lg text-red-700 flex items-center justify-center px-6 z-999 top-0 "
+          style={{ height: 60 }}
+        >
           <span>Hesabınız hələ administrator tərəfindən təsdiqlənməyib.</span>
           <CloseOutlined className="ml-4 text-xl cursor-pointer" />
         </div>
@@ -93,13 +94,13 @@ export const Header: React.FC = () => {
       <AntHeader
         style={{
           background: '#fff',
-          padding: screens.md ? "0 24px" : "0 12px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid #f0f0f0",
-          position: "sticky",
-          top: showBanner ? 48 : 0,
+          padding: screens.md ? '0 24px' : '0 12px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid #f0f0f0',
+          position: 'sticky',
+          top: !user?.isVerified ? 48 : 0,
           zIndex: 100,
         }}
       >
@@ -109,10 +110,12 @@ export const Header: React.FC = () => {
         <Space size="large" align="center" style={{ marginRight: 24 }}>
           <div style={{ marginTop: '15px' }}>
             <Dropdown
-                menu={{ items: profileMenuItems }}
-                trigger={['click']} placement="bottomRight">
+              menu={{ items: notificationMenuItems }}
+              trigger={['click']}
+              placement="bottomRight"
+            >
               <Badge count={unreadCount}>
-                <BellOutlined style={{ fontSize: screens.md ? 24 : 20, cursor: "pointer" }} />
+                <BellOutlined style={{ fontSize: screens.md ? 24 : 20, cursor: 'pointer' }} />
               </Badge>
             </Dropdown>
           </div>

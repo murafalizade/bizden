@@ -16,7 +16,7 @@ export const AppDashboardLayout: React.FC<DashboardLayoutProps> = ({ children })
 
       <div className="flex flex-col flex-1 ml-[280px] transition-all">
         <Header />
-        <main className="m-6 p-6 bg-white rounded-2xl shadow-md flex flex-col gap-4">
+        <main className="m-6 p-6 bg-white rounded-2xl flex flex-col gap-4 min-h-[650px]">
           {children}
         </main>
       </div>

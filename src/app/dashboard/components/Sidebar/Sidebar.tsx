@@ -41,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: '#001529',
       }}
     >
       <div
@@ -48,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
           height: '90px',
           display: 'flex',
           alignItems: 'center',
-          paddingLeft: '40px',
+          justifyContent: 'center',
           color: '#e6f7ff',
           fontSize: '28px',
           fontWeight: 700,

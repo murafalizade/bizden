@@ -1,2 +1,2 @@
-"use client";
-export * from './DashboardLayout'
+'use client';
+export * from './DashboardLayout';

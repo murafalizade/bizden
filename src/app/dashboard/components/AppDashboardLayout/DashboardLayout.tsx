@@ -3,8 +3,8 @@ import Sider from 'antd/es/layout/Sider';
 import React from 'react';
 import { Sidebar } from '@app/dashboard/components/Sidebar';
 import { Header } from '@app/dashboard/components/Header';
-import { Content } from 'antd/es/layout/layout';
 import { BottomNavigation } from '@app/dashboard/components/BottomNavigation';
+import { Content } from 'antd/es/layout/layout';
 
 
 interface DashboardLayoutProps {

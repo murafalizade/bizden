@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import registerReducer from '@app/(authless)/register/libs/slice';
+import searchReducer from '@app/dashboard/search/libs/search-slice';
 
 export const store = configureStore({
-    reducer: {
-        register: registerReducer,
-    },
+  reducer: {
+    register: registerReducer,
+    search: searchReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

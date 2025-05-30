@@ -25,7 +25,7 @@ export const BusinessInfoForm = () => {
     watch,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<BusinessProfilePayload>({
+  } = useForm({
     resolver: yupResolver(businessInfoSchema),
     reValidateMode: 'onChange',
     defaultValues: {
@@ -42,8 +42,8 @@ export const BusinessInfoForm = () => {
     dispatch(setStep(RegisterStep.Submission));
   };
 
-  const onSubmit = (variables: BusinessProfilePayload) => {
-    dispatch(setBusinessInfoPayload(variables));
+  const onSubmit = (variables: object) => {
+    dispatch(setBusinessInfoPayload(variables as BusinessProfilePayload));
     nextStep();
   };
 

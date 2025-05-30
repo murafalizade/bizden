@@ -34,15 +34,15 @@ export const sidebarItems: Array<MenuItemType & { accessRoles: UserRole[]; path:
   {
     key: 'my-offers',
     icon: <GiftOutlined style={{ fontSize: '24px' }} />,
-    path: '/dashboard/opportunities',
-    label: <Link href="/dashboard/opportunities">Müraciətlərim</Link>,
+    path: '/dashboard/applications',
+    label: <Link href="/dashboard/applications">Müraciətlərim</Link>,
     accessRoles: [UserRole.Student, UserRole.Veteran],
   },
   {
     key: 'my-discounts',
     icon: <GiftOutlined style={{ fontSize: '24px' }} />,
-    path: '/dashboard/applications',
-    label: <Link href="/dashboard/applications">Təkliflərim</Link>,
+    path: '/dashboard/opportunities',
+    label: <Link href="/dashboard/opportunities">Təkliflərim</Link>,
     accessRoles: [UserRole.Business],
   },
   {

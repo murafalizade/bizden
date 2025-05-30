@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     'BIZDƏN tələbələr, veteranlar və şəhid ailələri üçün endirimlər və pulsuz fürsətlər təqdim edən platformadır.',
 };
 
-export default function SearchLayout({ children }: { children: React.ReactNode }) {
+export default function ApplicationLayout({ children }: { children: React.ReactNode }) {
   return <main>{children}</main>;
 }
